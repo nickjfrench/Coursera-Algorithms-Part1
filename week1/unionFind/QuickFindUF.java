@@ -1,7 +1,6 @@
 /* *****************************************************************************
- *  Name:              Ada Lovelace
- *  Coursera User ID:  123456
- *  Last modified:     October 16, 1842
+ *  Name:              Nicholas French
+ *  Created On:        18/7/2023
  **************************************************************************** */
 
 package week1.unionFind;

@@ -1,8 +1,9 @@
-package week1.intro;/* *****************************************************************************
- *  Name:              Ada Lovelace
- *  Coursera User ID:  123456
- *  Last modified:     October 16, 1842
+/* *****************************************************************************
+ *  Name:              Nicholas French
+ *  Created On:        18/7/2023
  **************************************************************************** */
+
+package week1.intro;
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdRandom;
