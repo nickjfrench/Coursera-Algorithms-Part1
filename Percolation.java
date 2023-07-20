@@ -81,10 +81,10 @@ public class Percolation {
             return;
 
         if (row == 0) // Top Row
-            uf.union(uf.find(gridToIndex(row, col)), uf.find(virtualTopIndex));
+            uf.union(gridToIndex(row, col), virtualTopIndex);
 
         if (row == gridSize - 1) // Bottom Row
-            uf.union(uf.find(gridToIndex(row, col)), uf.find(virtualBottomIndex));
+            uf.union(gridToIndex(row, col), virtualBottomIndex);
     }
 
     private void unionNeighbourNodes(int row, int col) {
@@ -148,20 +148,24 @@ public class Percolation {
     public static void main(String[] args) {
         Percolation percolation = new Percolation(Integer.parseInt(args[0]));
 
+        System.out.println("Starting Monte Carlo Simulation...");
         while (!percolation.percolates()) {
             int x = StdRandom.uniformInt(0, percolation.gridSize);
             int y = StdRandom.uniformInt(0, percolation.gridSize);
             percolation.open(x, y);
         }
 
-        percolation.printGrid();
+        // percolation.printGrid();
         System.out.println(
-                "Percolated in " + percolation.numberOfOpenSites() + "/" + (percolation.gridSize
-                        * percolation.gridSize) + " cells.");
+                "Monte Carlo Sim percolated in " + percolation.numberOfOpenSites() + "/" + (
+                        percolation.gridSize
+                                * percolation.gridSize) + " cells.");
 
         boolean testCases = false;
         if (testCases) {
-            Percolation testPercolation = new Percolation(Integer.parseInt(args[0]));
+            System.out.println();
+            System.out.println("Starting Percolation Test Cases...");
+            Percolation testPercolation = new Percolation(10);
 
             System.out.println("InBounds() Test Cases:");
             System.out.println("Needs to be true (0, 0): " +
