@@ -13,7 +13,7 @@ public class Percolation {
     private WeightedQuickUnionUF uf;
     private int count;
     private int virtualTopIndex;
-    private int virtualBottomIndex;
+    private boolean percolated;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -24,12 +24,13 @@ public class Percolation {
         gridSize = n;
 
         grid = new boolean[gridSize][gridSize]; // row * n + col
-        uf = new WeightedQuickUnionUF(gridSize * gridSize + 2); // n^2 plus two virtual nodes.
+        uf = new WeightedQuickUnionUF(gridSize * gridSize + 1); // n^2 plus top virtual node.
 
         virtualTopIndex = gridSize * gridSize;
-        virtualBottomIndex = gridSize * gridSize + 1;
 
         count = 0;
+
+        percolated = false;
     }
 
     // opens the site (row, col) if it is not open already
@@ -49,8 +50,10 @@ public class Percolation {
         grid[internalRow][internalCol] = true;
         count += 1;
 
-        unionVirtualNodes(internalRow, internalCol);
+        unionVirtualTop(internalRow, internalCol);
         unionNeighbourNodes(internalRow, internalCol);
+
+        checkBottomToTop(internalRow, internalCol);
     }
 
     // is the site (row, col) open?
@@ -86,18 +89,21 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return uf.find(virtualBottomIndex) == uf.find(virtualTopIndex);
+        // To prevent backwash, bottom virtual node was removed.
+        // Now checked in checkBottomToTop()
+        return percolated;
+        // return uf.find(virtualBottomIndex) == uf.find(virtualTopIndex);
     }
 
-    private void unionVirtualNodes(int row, int col) {
-        if (row > 0 && row < gridSize - 1) // Middle Rows
-            return;
-
+    private void unionVirtualTop(int row, int col) {
         if (row == 0) // Top Row
             uf.union(gridToIndex(row, col), virtualTopIndex);
+    }
 
-        if (row == gridSize - 1) // Bottom Row
-            uf.union(gridToIndex(row, col), virtualBottomIndex);
+    private void checkBottomToTop(int row, int col) {
+        // To prevent backwash, don't implement virtual bottom. Check percolation if on bottom row.
+        if (row == gridSize - 1)
+            percolated = uf.find(gridToIndex(row, col)) == uf.find(virtualTopIndex);
     }
 
     private void unionNeighbourNodes(int row, int col) {
